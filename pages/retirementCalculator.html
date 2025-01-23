@@ -82,62 +82,66 @@
     </footer>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const menuToggle = document.getElementById('menu-toggle');
-            const navLinks = document.querySelector('.nav-links');
-            const retirementForm = document.getElementById('retirement-form');
-            const resultDiv = document.getElementById('result');
+    document.addEventListener('DOMContentLoaded', () => {
+        const menuToggle = document.getElementById('menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+        const retirementForm = document.getElementById('retirement-form');
+        const resultDiv = document.getElementById('result');
 
-            // Toggle navigation menu for smaller screens
-            if (menuToggle && navLinks) {
-                menuToggle.addEventListener('click', () => {
-                    navLinks.classList.toggle('active');
-                });
-            }
+        // Initially hide the result section
+        resultDiv.style.display = 'none';
 
-            // Handle the retirement calculator form submission
-            if (retirementForm && resultDiv) {
-                retirementForm.addEventListener('submit', (e) => {
-                    e.preventDefault();
+        // Toggle navigation menu for smaller screens
+        if (menuToggle && navLinks) {
+            menuToggle.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+            });
+        }
 
-                    const currentAge = parseInt(document.getElementById('current-age').value);
-                    const retirementAge = parseInt(document.getElementById('retirement-age').value);
-                    const currentSavings = parseFloat(document.getElementById('current-savings').value);
-                    const monthlyContribution = parseFloat(document.getElementById('monthly-contribution').value);
-                    const expectedReturn = parseFloat(document.getElementById('expected-return').value) / 100 / 12;
+        // Handle the retirement calculator form submission
+        if (retirementForm && resultDiv) {
+            retirementForm.addEventListener('submit', (e) => {
+                e.preventDefault();
 
-                    if (currentAge >= retirementAge) {
-                        alert('Retirement age must be greater than the current age.');
-                        return;
-                    }
+                const currentAge = parseInt(document.getElementById('current-age').value);
+                const retirementAge = parseInt(document.getElementById('retirement-age').value);
+                const currentSavings = parseFloat(document.getElementById('current-savings').value);
+                const monthlyContribution = parseFloat(document.getElementById('monthly-contribution').value);
+                const expectedReturn = parseFloat(document.getElementById('expected-return').value) / 100 / 12;
 
-                    if (currentAge < 0 || retirementAge < 0 || currentSavings < 0 || monthlyContribution < 0 || expectedReturn < 0) {
-                        alert('All input values must be positive.');
-                        return;
-                    }
+                if (currentAge >= retirementAge) {
+                    alert('Retirement age must be greater than the current age.');
+                    return;
+                }
 
-                    const monthsUntilRetirement = (retirementAge - currentAge) * 12;
-                    let totalSavings = currentSavings;
+                if (currentAge < 0 || retirementAge < 0 || currentSavings < 0 || monthlyContribution < 0 || expectedReturn < 0) {
+                    alert('All input values must be positive.');
+                    return;
+                }
 
-                    for (let i = 0; i < monthsUntilRetirement; i++) {
-                        totalSavings += monthlyContribution;
-                        totalSavings *= (1 + expectedReturn);
-                    }
+                const monthsUntilRetirement = (retirementAge - currentAge) * 12;
+                let totalSavings = currentSavings;
 
-                    const totalContributions = currentSavings + (monthlyContribution * monthsUntilRetirement);
-                    const interestEarned = totalSavings - totalContributions;
+                for (let i = 0; i < monthsUntilRetirement; i++) {
+                    totalSavings += monthlyContribution;
+                    totalSavings *= (1 + expectedReturn);
+                }
 
-                    resultDiv.innerHTML = `
-                        <h2>Retirement Savings Projection</h2>
-                        <p><strong>Total Savings at Retirement:</strong> $${totalSavings.toFixed(2)}</p>
-                        <p><strong>Total Contributions:</strong> $${totalContributions.toFixed(2)}</p>
-                        <p><strong>Interest Earned:</strong> $${interestEarned.toFixed(2)}</p>
-                    `;
+                const totalContributions = currentSavings + (monthlyContribution * monthsUntilRetirement);
+                const interestEarned = totalSavings - totalContributions;
 
-                    resultDiv.style.display = 'block';
-                });
-            }
-        });
-    </script>
+                resultDiv.innerHTML = `
+                    <h2>Retirement Savings Projection</h2>
+                    <p><strong>Total Savings at Retirement:</strong> $${totalSavings.toFixed(2)}</p>
+                    <p><strong>Total Contributions:</strong> $${totalContributions.toFixed(2)}</p>
+                    <p><strong>Interest Earned:</strong> $${interestEarned.toFixed(2)}</p>
+                `;
+
+                resultDiv.style.display = 'block'; // Display the result div after calculation
+            });
+        }
+    });
+</script>
+
 </body>
 </html>
