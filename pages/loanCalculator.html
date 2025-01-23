@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinanceWise - Loan Calculator</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Nav Bar -->
+    <nav>
+        <div class="container nav-container">
+            <div class="logo">FinanceWise</div>
+            <div id="menu-toggle" class="menu-toggle">&#9776;</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#about">About</a></li>
+                <li><a href="index.html#calculators">Calculators</a></li>
+                <li><a href="index.html#tips">Tips</a></li>
+                <li><a href="index.html#resources">Resources</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Loan Calculator Section -->
+    <section id="loan-calculator" class="calculator-section">
+        <div class="container">
+            <h1>Loan Calculator</h1>
+            <form id="loan-form">
+                <div class="form-group">
+                    <label for="loan-amount">Loan Amount ($):</label>
+                    <input type="number" id="loan-amount" name="loan-amount" required>
+                </div>
+                <div class="form-group">
+                    <label for="interest-rate">Annual Interest Rate (%):</label>
+                    <input type="number" id="interest-rate" name="interest-rate" step="0.1" required>
+                </div>
+                <div class="form-group">
+                    <label for="loan-term">Loan Term (years):</label>
+                    <input type="number" id="loan-term" name="loan-term" required>
+                </div>
+                <button type="submit" class="btn">Calculate</button>
+            </form>
+            <div id="result" class="result-section"></div>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 FinanceWise. All Rights Reserved.</p>
+            <ul class="footer-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#about">About</a></li>
+                <li><a href="index.html#calculators">Calculators</a></li>
+                <li><a href="index.html#tips">Tips</a></li>
+                <li><a href="index.html#resources">Resources</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+            </ul>
+            <div class="social-media">
+                <a href="#" class="social-icon" aria-label="Facebook">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="#" class="social-icon" aria-label="Twitter">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="#" class="social-icon" aria-label="LinkedIn">
+                    <i class="fab fa-linkedin-in"></i>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const menuToggle = document.getElementById('menu-toggle');
+            const navLinks = document.querySelector('.nav-links');
+            const loanForm = document.getElementById('loan-form');
+            const resultDiv = document.getElementById('result');
+
+            // Toggle navigation menu for smaller screens
+            if (menuToggle && navLinks) {
+                menuToggle.addEventListener('click', () => {
+                    navLinks.classList.toggle('active');
+                });
+            }
+
+            // Initially hide the result div
+            if (resultDiv) {
+                resultDiv.style.display = 'none';
+            }
+
+            // Handle loan calculator form submission
+            if (loanForm) {
+                loanForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+
+                    // Get input values
+                    const loanAmount = parseFloat(document.getElementById('loan-amount').value);
+                    const annualInterestRate = parseFloat(document.getElementById('interest-rate').value);
+                    const loanTermYears = parseFloat(document.getElementById('loan-term').value);
+
+                    // Validate input values
+                    if (isNaN(loanAmount) || isNaN(annualInterestRate) || isNaN(loanTermYears) || loanAmount <= 0 || annualInterestRate <= 0 || loanTermYears <= 0) {
+                        alert('Please enter positive numerical values for all fields.');
+                        return;
+                    }
+
+                    // Calculate monthly interest rate and total months
+                    const monthlyInterestRate = annualInterestRate / 100 / 12;
+                    const totalMonths = loanTermYears * 12;
+
+                    // Calculate monthly payment, total payment, and total interest
+                    const x = Math.pow(1 + monthlyInterestRate, totalMonths);
+                    const monthlyPayment = (loanAmount * x * monthlyInterestRate) / (x - 1);
+                    const totalPayment = monthlyPayment * totalMonths;
+                    const totalInterest = totalPayment - loanAmount;
+
+                    // Display the result in the result div
+                    resultDiv.innerHTML = `
+                        <h2>Loan Repayment Details</h2>
+                        <h3>Monthly Payment: $${monthlyPayment.toFixed(2)}</h3>
+                        <p>Total Payment: $${totalPayment.toFixed(2)}</p>
+                        <p>Total Interest: $${totalInterest.toFixed(2)}</p>
+                    `;
+
+                    // Show the result div
+                    resultDiv.style.display = 'block';
+                    resultDiv.style.padding = '20px';
+                    resultDiv.style.marginTop = '20px';
+                    resultDiv.style.border = '1px solid #f53b3b';
+                    resultDiv.style.borderRadius = '8px';
+                    resultDiv.style.backgroundColor = '#f9f9f9';
+                });
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinanceWise - Budget Calculator</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Nav Bar -->
+    <nav>
+        <div class="container nav-container">
+            <div class="logo">FinanceWise</div>
+            <div id="menu-toggle" class="menu-toggle">&#9776;</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#about">About</a></li>
+                <li><a href="index.html#calculators">Calculators</a></li>
+                <li><a href="index.html#tips">Tips</a></li>
+                <li><a href="index.html#resources">Resources</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Budget Calculator Section -->
+    <section id="budget-calculator" class="calculator-section">
+        <div class="container">
+            <h1>Budget Calculator</h1>
+            <form id="budget-form">
+                <div class="form-group">
+                    <label for="monthly-income">Monthly Income ($):</label>
+                    <input type="number" id="monthly-income" name="monthly-income" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="housing">Housing Expenses ($):</label>
+                    <input type="number" id="housing" name="housing" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="utilities">Utilities ($):</label>
+                    <input type="number" id="utilities" name="utilities" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="food">Food ($):</label>
+                    <input type="number" id="food" name="food" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="transportation">Transportation ($):</label>
+                    <input type="number" id="transportation" name="transportation" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="healthcare">Healthcare ($):</label>
+                    <input type="number" id="healthcare" name="healthcare" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="entertainment">Entertainment ($):</label>
+                    <input type="number" id="entertainment" name="entertainment" min="0" required>
+                </div>
+                <button type="submit" class="btn">Calculate</button>
+            </form>
+            <div id="result" class="result-section"></div>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 FinanceWise. All Rights Reserved.</p>
+            <ul class="footer-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#about">About</a></li>
+                <li><a href="index.html#calculators">Calculators</a></li>
+                <li><a href="index.html#tips">Tips</a></li>
+                <li><a href="index.html#resources">Resources</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+            </ul>
+            <div class="social-media">
+                <a href="#" class="social-icon" aria-label="Facebook">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="#" class="social-icon" aria-label="Twitter">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="#" class="social-icon" aria-label="LinkedIn">
+                    <i class="fab fa-linkedin-in"></i>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const menuToggle = document.getElementById('menu-toggle');
+            const navLinks = document.querySelector('.nav-links');
+            const budgetForm = document.getElementById('budget-form');
+            const resultDiv = document.getElementById('result');
+
+            // Toggle navigation menu for smaller screens
+            if (menuToggle && navLinks) {
+                menuToggle.addEventListener('click', () => {
+                    navLinks.classList.toggle('active');
+                });
+            }
+
+            // Handle the budget calculator form submission
+            if (budgetForm && resultDiv) {
+                budgetForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+
+                    const monthlyIncome = parseFloat(document.getElementById('monthly-income').value);
+                    const housing = parseFloat(document.getElementById('housing').value);
+                    const utilities = parseFloat(document.getElementById('utilities').value);
+                    const food = parseFloat(document.getElementById('food').value);
+                    const transportation = parseFloat(document.getElementById('transportation').value);
+                    const healthcare = parseFloat(document.getElementById('healthcare').value);
+                    const entertainment = parseFloat(document.getElementById('entertainment').value);
+
+                    // Calculate total expenses and remaining budget
+                    const totalExpenses = housing + utilities + food + transportation + healthcare + entertainment;
+                    const remainingBudget = monthlyIncome - totalExpenses;
+
+                    if (monthlyIncome < totalExpenses) {
+                        alert('Warning: Expenses exceed your income!');
+                    }
+
+                    // Display the result
+                    resultDiv.innerHTML = `
+                        <h2>Budget Summary</h2>
+                        <p><strong>Total Expenses:</strong> $${totalExpenses.toFixed(2)}</p>
+                        <p><strong>Remaining Budget:</strong> $${remainingBudget.toFixed(2)}</p>
+                    `;
+
+                    resultDiv.style.display = 'block';
+                });
+            }
+        });
+    </script>
+</body>
+</html>
